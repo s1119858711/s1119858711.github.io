@@ -9,7 +9,8 @@
   - 针对想把username.github.io重定向为你自己的域名才需要，比如搜索username.github.io可以跳转到网页中。如果想搜索xxx.com也可以跳转到网页中则需要准备一个域名，推荐各个云平台非常便宜。一般的域名也就几块钱一年。
 - HTML文件(可以不准备)
   - 针对于想美化网页可以准备一个模板
-  - <a href="/day06/download/cors.zip">没有的点我下载</a> 
+  - 没有的可以网盘下载
+    - 链接：https://pan.baidu.com/s/1pLOJXfwzNlUoDaqXFbworA  提取码：as0q 
     - 里面有两个资源文件，注意后面要用到。
 
 ### 正式开始
@@ -87,6 +88,46 @@ https和http的区别在于，http的内容不经加密传输，而Https则是�
 ---
 
 #### :pig: 美化网页
+
+###### :pen: First Step 下载资源文件
+
+HTML资源文件在开始的准备材料中。
+
+###### :pen: Second Step 上传至仓库
+
+将下载到的资源文件1上传至username.github.io
+
+> 上传是点击Upload files。对于文件夹 可以直接拖动文件夹传至Github
+>
+> 上传完成后理应如下图所示【最初的README.md文件可以删掉了】
+
+![](https://cdn.jsdelivr.net/gh/s1119858711/picture-host//ndata/20200328192853.png)
+
+---
+
+**至此** 稍等一会，6min左右，搜索domain或者username.github.io均可应直接跳转到index.html文件
+
+---
+
+#### :cat: 托管多个网页
+
+###### :pencil: 建立文件夹
+
+ 在username.github.io下直接创建文件，命名为Page[随意命名]
+
+###### :pencil: 上传资源文件到文件夹中
+
+同上，将资源文件2上传到Page[刚刚创建的]目录下，上传完成后如下图所示
+
+![](https://cdn.jsdelivr.net/gh/s1119858711/picture-host//ndata/20200328193437.png)
+
+###### :dog: 进入网站
+
+在搜索框搜索username.github.io/Page即可进入到第二次托管的网页
+
+---
+
+**至此** 托管多个网页完成。
 
 
 
