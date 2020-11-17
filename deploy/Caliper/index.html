@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css.css">
+	<title>Caliper</title>
+</head>
+<body>
+
+	<p>需要建立在搭建好Fabric之上的机器上,这里有讲.==><a href="https://xuanskyone.xyz/deploy/Fabric/" target='_blank'>戳我</a></p>
+
+<!-- 	<h4><font color='red'>STEP1安装Nodejs</font></h4>
+	<p>curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -</p>
+
+	<p>sudo apt install nodejs</p>
+
+	<p>sudo apt-get install node-gyp</p>
+
+	<p>查看版本 node --version  
+		<br>npm --version</p>
+ -->
+	<p>进入到caliper-benchmarks目录下,依次运行以下命令</p>
+	<div class='main'>
+	<p>npm i @hyperledger/caliper-cli</p>
+	<p>npx caliper --version</p>
+	<p>npm init -y</p>
+	<p>npm install --only=prod @hyperledger/caliper-cli</p>
+	<p>npx caliper bind --caliper-bind-sut fabric --caliper-bind-sdk 1.4.0(过程较长,稍等)</p>
+
+	<p><font color='pink'>去net 里面的config_solo里面,运行以下generate.sh,如下命令
+		<br>
+		./generate.sh
+	</font></p>
+
+	<p>npx caliper launch manager \
+    --caliper-workspace . \
+    --caliper-benchconfig benchmarks/scenario/simple/config.yaml \
+    --caliper-networkconfig networks/fabric/v1/v1.4.1/2org1peergoleveldb/fabric-go.yaml</p>
+	</div>
+
+    <p><font color='pink'>剩下的修改可以去caliper-benchconfig benchmarks/scenario/simple/config.yaml这个目录下修改TPS即可</font></p>
+
+
+
+
+</body>
+</html>
