@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/one.css">
+	<title>Caliper</title>
+</head>
+<body>
+		<h1> 这里讲解一下关于Hyperledger-Fabric在谷歌云Ubuntu 16.04的部署</h1>
+
+		<p>前提:翻个墙~~~,配套视频==><a href="">戳我</a></p>
+		<font color='red'>STEP1:首先建立如下虚拟机</font>
+
+		<br>
+		<img src="https://gitee.com/song_tianyi/picture-host/raw/master/ndata//20201117103039.png"/ height="500",width="100" />
+
+		<br>
+		<font color='red'>STEP2:利用Xshell连接主机</font>
+		<br>
+
+		<font color='blue'>STEP2.1:设置云主机</font>
+		<p>利用Google的ssh进入到主机中,利用Xshell连接主机,云主机的设置步骤如下:</p>
+		<div>
+			<p>sudo -i</p>
+			<p>vi /etc/ssh/sshd_config</p>
+			<p>Authentication:PermitRootLogin设置为yes(默认为No)</p>
+			<p>PasswordAuthentication yes(默认为No)</p>
+			<p>passwd root (给Root设置密码,方便一会在Xshell中连接,注意,在这里设置密码是不显示的,直接输入就行,不会有密码的占位符)</p>
+			<p>/etc/init.d/ssh restart</p>
+		</div>
+		
+		<font color='blue'>STEP2.2:保证外部ip地址不变</font>
+		<p>因为谷歌云的云主机的外部ip是变化的,因此我们需要在VPC网络中为刚刚创建的谷歌云主机设置一个固定的ip</p>
+		
+		<img src="image/vpc1.jpg" alt="Page" width='600' height='300'>
+		<img src="image/vpc2.jpg" alt="Page" width='600' height='300'>
+
+		<p><font color='blue'>STEP2.3:Xshell连接云主机</font></p>
+		<p>打开Xshell,输入云主机的外部ip.并且以root登录,密码则是passwd中设置的密码
+		</p>
+
+
+		<img src="image/ssh1.jpg" alt="" width='600' height='300'>
+
+		<img src="image/ssh2.jpg" alt="" width='600' height='300'>
+
+		<p>此时,即可以用Xshell连接云主机了</p>
+
+		<p><font color='red'>STEP3:安装fabric</font></p>
+
+		<p>依次在Xshell的控制框里面输入以下内容</p>
+
+		<div class='main'>
+			sudo apt-get update
+			<br>
+			sudo apt-get install apt-transport-https ca-certificates gnupg-agent software-properties-common
+			<br>
+			curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+			<br>
+			sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu  $(lsb_release -cs)  stable"
+			<br>
+			sudo apt-get update
+			<br>
+			sudo apt-get install docker-ce docker-ce-cli containerd.io
+			<br>
+			docker run hello-world
+			<br>
+			sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+			<br>
+			sudo chmod +x /usr/local/bin/docker-compose
+			<br>
+			curl -O https://storage.googleapis.com/golang/go1.12.9.linux-amd64.tar.gz
+			<br>
+			tar -xvf go1.12.9.linux-amd64.tar.gz
+			<br>
+			sudo mv go /usr/local
+			<br>
+			vim ~/.profile
+			<br>
+			//下面这两句话添加到文件末尾
+			<br>
+			export GOPATH=$HOME/go
+			<br>
+			export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+			<br>
+			source ~/.profile
+			<br>
+			curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+			<br>
+			sudo apt-get install -y nodejs
+			<br>
+			mkdir hyperledger
+			<br>
+			cd hyperledger/
+			<br>
+			curl -sSL http://bit.ly/2ysbOFE | bash -s -- 1.4.7 1.4.7 0.4.20
+			<br>
+			vim ~/.profile
+			<br>
+			//将下面这句话添加到文件末尾
+			<br>
+			export PATH=/home/$USER/hyperledger/fabric-samples/bin:$PATH
+			<br>
+			source ~/.profile
+		</div>
+
+		<p><font color='red'>STEP4:测试fabric</font></p>
+		<p>切换到first-network中,里面有一个byfn.sh文件,执行以下语句</p>
+		<p>./byfn.sh up</p>
+		<p>即可看到一系列的输出,类似于下图</p>
+		<img src="image/fabric1.png" alt="">
+
+		<p><font color='red'>STEP5:在Fabric中进行一些试验</font></p>
+
+		<p>这个具体不展开,可以参考如下==> <a href="https://www.cnblogs.com/zongmin/p/11842562.html" target='_blank'>戳我</a></p>
+
+
+		<p><font color='red'>STEP6:结束fabric</font></p>
+		<p>执行以下语句,即可关掉fabric网络</p>
+		<p>./byfn.sh down</p>
+
+		<p><font color='red'>STEP7:查看是否关闭</font></p>
+		<p>这里需要用到Docker的一些常用命令.</p>
+		<p>输入 docker ps -a 没有大量的输出即可证明fabric网络关掉了</p>
+
+
+
+
+
+</body>
+</html>
