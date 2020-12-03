@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css.css">
+	<title>Run FATE In Docer</title>
+</head>
+<body>
+
+	<div>
+		<h1><center>这篇主要介绍基于docker环境下,两台云主机,部署FATE模型</center></h1>
+
+		<h2>准备环境</h2>
+		<ul>
+			<li>Ubuntu 18.04的系统</li>
+			<li>两台谷歌云主机:配置为4个vcou 16G内存 硬盘容量500G</li>
+			<li>允许HTTP和HTTPS</li>
+			<li>固定好每台主机的ip地址</li>
+			<li>配置好Xshell</li>
+
+		</ul>
+	</div>
+
+	<div>
+		<h2>STEP1:安装Docker和Docker-Compose</h2>
+		每台机器都要安装Docker和Docker-Compose
+
+		<h4>STEP1.1:安装Docker</h4>
+		<div class='main'>
+			<span style="color:blue">curl -fsSL https://get.docker.com -o get-docker.sh</span>
+			<br>
+			<span style='color:blue'>sh get-docker.sh</span>
+			<br>
+			<span style='color:blue'>usermod -aG docker $(whoami) </span>
+			<br>
+			<span style='color:blue'>exec $SHELL</span>
+			<br>
+			<p>验证Docker是否安装成功,利用docker version 查看Client和Server的运行情况</p>
+		</div>
+
+		<h4>STEP1.2:安装Docker-Compose</h2>
+		<div class='main2'>
+			<font style='color:blue'>sudo curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose</font>
+			<br>
+			注意上面这条命令不唯一<a href="https://docs.docker.com/compose/install/" target='_blank'>,看这里</a>
+			<br>
+			<font style='color:blue'>sudo chmod +x /usr/local/bin/docker-compose</font>
+			<p>验证Docker-compose是否安装成功,利用docker-compose version即可</p>
+		</div>
+
+		<h2>STEP2:部署FATE</h2>
+
+		每台电脑都要配置STEP2.1
+
+		<h4>STEP2.1:下载FATE Image</h4>
+
+		FATE镜像的版本<font style='color:red'>version</font>可在<a href="https://github.com/FederatedAI/FATE/releases" target='_blank'>release</a> 页面上查看，
+		<div class='main2'>
+			<font style='color:blue'>docker pull federatedai/eggroll: <font style='color:red'>version</font>-release</font>
+			<br>
+			<font style='color:blue'>docker pull federatedai/eggroll:<font style='color:red'>version</font>-release</font>
+			<br>
+
+			<font style='color:blue'>docker pull federatedai/fateboard:<font style='color:red'>version</font>-release</font>
+
+			<br>
+			<font style='color:blue'>docker pull federatedai/python:<font style='color:red'>version</font>-release</font>
+
+			<br>
+			<font style='color:blue'>docker pull federatedai/serving-server:<font style='color:red'>version</font>-release</font>
+
+			<br>
+			<font style='color:blue'>docker pull federatedai/serving-server:<font style='color:red'>version</font>-release</font>
+
+			<br>
+			<font style='color:blue'>docker pull federatedai/serving-proxy:<font style='color:red'>version</font>-release</font>
+
+			<br>
+			<font style='color:blue'>docker pull redis:5</font>
+
+			<br>
+			<font style='color:blue'>docker pull mysql:8</font>
+
+			<p>利用 docker images查看已经下载的镜像</p>
+		</div>
+
+
+
+		<h4>STEP2.2:下载并配置部署文件</h4>
+
+		<div class='main2'>
+		<font style='color:blue'>curl -OL https://github.com/FederatedAI/KubeFATE/releases/download/v1.5.0/kubefate-docker-compose-v1.5.0.tar.gz</font> 
+		<br>
+		注意上面这句话不唯一,在 <a href="https://github.com/FederatedAI/KubeFATE/releases" target='_blank'>这里看最新的</a> 
+		<br>
+
+		<font style='color:blue'>
+		 tar -xzf kubefate-docker-compose.tar.gz
+		</font>
+		<br>
+		<font style='color:blue'>cd docker-deploy/</font>
+		<br>
+		<font style='color:blue'>vi vi parties.conf</font>
+		<p>下面是修改好的文件，party 10000的集群将部署在192.168.7.1上，而party 9999的集群将部署在192.168.7.2上。</p>
+
+		user=root                                   # 运行FATE容器的用户
+		<br>
+		dir=/data/projects/fate                     # docker-compose部署目录
+		<br>
+		partylist=(10000 9999)                      # 组织id
+		<br>
+		partyiplist=(192.168.7.1 192.168.7.2)       # id对应训练集群ip 分别是第一台机器,第二台机器的ip
+		<br>
+		servingiplist=(192.168.7.1 192.168.7.2)     # id对应在线预测集群ip 分别是第一台,第二台机器的ip
+		<br>
+		<br>
+		<font style='color:blue'>bash generate_config.sh          # 生成部署文件</font>
+		<br>
+		<font style='color:blue'>bash docker_deploy.sh all        # 在各个party上部署FATE</font>
+		</div>
+
+	</div>
+
+	<h2><a href="https://github.com/FederatedAI/KubeFATE/blob/master/docker-deploy/README_zh.md" target="_blank">剩下的 </a> </h2>
+
+
+
+	
+</body>
+</html>

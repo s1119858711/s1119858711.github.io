@@ -1,0 +1,12 @@
+.main{
+	text-align:left;
+	background-color:#708090;
+	background-color:rgba(0,0,0,0.2);
+}
+
+.main2{
+	background-attachment:#708090;
+	background-color:rgba(0,0,0,0.2);
+	background-origin:20px;
+
+}
